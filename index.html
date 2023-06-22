@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>КТ4.12RRR</title>
+    <style>
+        #slider {
+            width: 300px;
+            height: 20px;
+            background-color: lightgray;
+            position: relative;
+            border-radius: 10px;
+        }
+
+        #slider .handle {
+            width: 20px;
+            height: 20px;
+            background-color: #222;
+            border-radius: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+        }
+        #sliderValue{
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+            font-size: 25px;
+            margin-left: 130px;
+        }
+    </style>
+</head>
+<body>
+    <div id="slider">
+        <div class="handle"></div>
+    </div>
+    <p id="sliderValue"></p>
+
+    <script>
+        var slider = document.getElementById("slider");
+        var handle = document.querySelector("#slider .handle");
+        var sliderValue = document.getElementById("sliderValue");
+        var min = 0;
+        var max = 100;
+        var currentValue = 50;
+        var sliderWidth = slider.offsetWidth - handle.offsetWidth;
+        function updateSliderValue() {
+            var percent = (currentValue - min) / (max - min);
+            var position = percent * sliderWidth;
+            handle.style.left = position + "px";
+            sliderValue.textContent = currentValue;
+        }
+        function handleMove(event) {
+            var newPosition = event.clientX - slider.getBoundingClientRect().left;
+            newPosition = Math.max(0, Math.min(newPosition, sliderWidth));
+            var percent = newPosition / sliderWidth;
+            currentValue = Math.round(min + percent * (max - min));
+            updateSliderValue();
+        }
+        handle.addEventListener("mousedown", function () {
+            document.addEventListener("mousemove", handleMove);
+        });
+        document.addEventListener("mouseup", function () {
+            document.removeEventListener("mousemove", handleMove);
+        });
+        updateSliderValue();
+    </script>
+</body>
+</html>
